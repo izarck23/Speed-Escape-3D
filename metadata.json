@@ -1,0 +1,6 @@
+{
+  "name": "Speed Escape 3D",
+  "description": "Speed Escape 3D - High-octane 3D arcade racing game featuring dynamic desert highways, customizable supercars, competitive AI rivals, and neon arcade aesthetic.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

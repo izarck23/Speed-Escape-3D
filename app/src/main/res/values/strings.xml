@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Speed Escape 3D</string>
+    <string name="package_name">com.escape</string>
+    <string name="version_name">v1.1</string>
+    <string name="play">PLAY</string>
+    <string name="garage">GARAGE</string>
+    <string name="career">CAREER</string>
+    <string name="events">EVENTS</string>
+    <string name="settings">SETTINGS</string>
+    <string name="upgrade">UPGRADE</string>
+    <string name="customize">CUSTOMIZE</string>
+    <string name="resume">RESUME</string>
+    <string name="restart">RESTART</string>
+    <string name="exit_race">EXIT RACE</string>
+    <string name="next_race">NEXT RACE</string>
+    <string name="race_completed">RACE COMPLETED!</string>
+    <string name="desert_run">Desert Run</string>
+    <string name="city_sprint">City Sprint</string>
+    <string name="mountain_drift">Mountain Drift</string>
+</resources>

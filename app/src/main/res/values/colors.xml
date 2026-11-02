@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="racing_orange">#FF6D00</color>
+    <color name="racing_amber">#FFAB00</color>
+    <color name="racing_red">#FF1744</color>
+    <color name="racing_cyan">#00E5FF</color>
+    <color name="racing_gold">#FFD700</color>
+    <color name="bg_dark">#0A0E17</color>
+    <color name="bg_surface">#161F30</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#94A3B8</color>
+</resources>
