@@ -10,4 +10,6 @@ coverage/
 local.properties
 app/build/
 *.hprof
-
+.backup_speed_escape/
+.tools/
+*.apk
