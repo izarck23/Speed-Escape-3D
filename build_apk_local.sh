@@ -44,7 +44,9 @@ echo "[3/6] Synchronizing web assets..."
 if command -v npm &> /dev/null; then
     npm run build
     mkdir -p app/src/main/assets/web
-    cp -r dist/* app/src/main/assets/web/
+    cp -r dist/index.html app/src/main/assets/web/
+    cp -r dist/assets app/src/main/assets/web/
+    rm -rf app/src/main/assets/web/testing
 fi
 
 # 4. Update local.properties and gradlew permissions
@@ -63,9 +65,13 @@ echo "[6/6] Assembling Android Debug APK..."
 # Verification
 APK_PATH="app/build/outputs/apk/debug/app-debug.apk"
 if [ -f "$APK_PATH" ]; then
+    mkdir -p testing
+    cp "$APK_PATH" testing/app-debug.apk
+    cp "$APK_PATH" testing/SpeedEscape3D-v1.1-debug.apk
     echo "=========================================================="
     echo " BUILD SUCCESSFUL! "
     echo " APK Path: $APK_PATH"
+    echo " Testing Folder: testing/app-debug.apk"
     echo " APK Size: $(du -h "$APK_PATH" | cut -f1)"
     echo " Package ID: com.escape"
     echo "=========================================================="

@@ -12,7 +12,7 @@ import { ScreenTab } from './components/ui/BottomNavBar';
 import { WORLDS_DATA, LevelInfo } from './data/GameData';
 import { saveManager } from './data/SaveManager';
 import { soundManager } from './audio/SoundManager';
-import { Maximize2, Smartphone } from 'lucide-react';
+import { Maximize2, Smartphone, Download } from 'lucide-react';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenTab | 'loading'>('main_menu');
@@ -66,8 +66,18 @@ export default function App() {
 
   return (
     <div className="w-screen h-screen bg-black flex items-center justify-center overflow-hidden">
-      {/* Top Frame Utility Bar (Device Mode Toggle) */}
-      <div className="fixed top-2 right-2 z-50 flex items-center gap-2 bg-black/75 border border-white/20 rounded-full px-3 py-1 shadow-xl backdrop-blur-md">
+      {/* Top Frame Utility Bar (Device Mode Toggle & APK Download) */}
+      <div className="fixed top-2 right-2 z-50 flex items-center gap-2.5 bg-black/80 border border-white/20 rounded-full px-3 py-1 shadow-xl backdrop-blur-md">
+        <a
+          href="./testing/app-debug.apk"
+          download="SpeedEscape3D-v1.1-debug.apk"
+          className="flex items-center gap-1.5 text-[11px] font-racing font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
+          title="Download Android Debug APK"
+        >
+          <Download className="w-3.5 h-3.5 animate-pulse" />
+          <span>Download APK</span>
+        </a>
+        <div className="h-3 w-px bg-white/20" />
         <button
           onClick={() => setIsWidescreenFit(!isWidescreenFit)}
           className="flex items-center gap-1.5 text-[11px] font-racing font-bold text-slate-300 hover:text-amber-400 transition-colors cursor-pointer"

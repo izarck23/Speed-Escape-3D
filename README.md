@@ -58,9 +58,8 @@ chmod +x build_apk_local.sh
 
 Upon a successful build, the debug APK is generated at:
 
-```
-app/build/outputs/apk/debug/app-debug.apk
-```
+- Standard Gradle path: `app/build/outputs/apk/debug/app-debug.apk`
+- Easy-access testing folder: `testing/app-debug.apk` (and `testing/SpeedEscape3D-v1.1-debug.apk`)
 
 ---
 

@@ -13,6 +13,7 @@ app/build/
 .backup_speed_escape/
 .tools/
 *.apk
+!testing/*.apk
 .idea/
 *.iml
 .vscode/
