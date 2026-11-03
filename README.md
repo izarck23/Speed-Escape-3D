@@ -1,110 +1,115 @@
 # Speed Escape 3D
 
-High-octane arcade 3D racing game featuring dynamic desert highways, customizable supercars, competitive AI opponents, and futuristic neon mobile arcade presentation.
+High-octane arcade 3D racing game featuring dynamic desert highways, customizable supercars, competitive AI opponents, and futuristic neon arcade presentation.
 
-**Application ID:** `com.escape`  
-**Platform:** Android (API 26 to Android 15 / API 35) & Interactive Web Preview (Port 3000)  
-**Architecture:** Clean Architecture + MVVM + Dedicated Game Loop & Thread-Safe UI Bridge  
-**CI/CD:** Automated GitHub Actions APK build on push (`.github/workflows/build-apk.yml`)
-
----
-
-## 1. Engine & Audio System Enhancements
-
-- **Realistic Multi-Gear Supercar Audio**:
-  - Procedural Web Audio API sound engine using multi-oscillator harmonic synthesis.
-  - Multi-gear RPM simulation (1st to 5th gear with authentic rev sweeps from 1,000 to 7,800 RPM).
-  - High-frequency turbocharger spool whine and exhaust backfire burble pops on deceleration and gear shifts.
-  - Zero-click gain interpolation and automatic browser `AudioContext` resumption on user interaction.
-  - Independent sound effects and music volume sliders with quick HUD mute/unmute toggle.
-
-- **Zero-Hanging Loading System**:
-  - Dedicated `LoadingScreen` with tachometer progress, component pre-warming, and async yield before entering gameplay.
-  - Texture singletons and stripe texture caching in `CarGeometry` to avoid redundant 2D canvas creation.
-  - Pre-allocated racer array in `RaceEngine` to eliminate garbage collection (GC) pauses during 60 FPS gameplay.
-
-- **Ergonomic, Uninterrupted Touch Controls**:
-  - HTML5 PointerCapture API integration so holding steering buttons (`<` and `>`) never cuts out when thumbs slide or roll.
-  - Larger touch targets with glowing active visual feedback and haptic vibration (`navigator.vibrate`).
-  - **Auto-Throttle Switch**: Casual players can use auto-acceleration and focus on steering + boost; hardcore players can enable dedicated manual Gas and Brake pedals.
-  - **Screen-Zone Steering Mode**: Option to touch the left half of the screen to steer left and right half to steer right.
+- **Application ID / Namespace:** `com.escape`
+- **Architecture:** Hybrid Android Architecture (Hardware-accelerated native WebView + 3D Three.js Engine + Jetpack Compose Foundation & Thread-Safe UI Bridge)
+- **Target Platform:** Android (API 26 Oreo to Android 15 Vanilla Ice Cream / API 35) & Web Preview (Vite on Port 3000)
+- **Build System:** Gradle 8.11.1 with Android Gradle Plugin (AGP) 8.7.2 & Kotlin 2.0.21
 
 ---
 
-## 2. Screens & Features Matching the Visual Reference
+## 1. Project Requirements
 
-1. **Main Menu**:
-   - Status bar with time, signal, battery
-   - Top player avatar (Lv. 5), coin counter (12,500), gem counter (50)
-   - Centered 3D Racing Logo: `SPEED ESCAPE 3D v1.1` with checkered wings
-   - Hero desert highway with sports car at sunset
-   - Glowing orange **PLAY** CTA button
-   - Bottom Navigation: Garage, Career, Events, Settings
-
-2. **Garage**:
-   - Header with back and home buttons
-   - Interactive 3D Turntable Car Viewer with smooth camera orbit
-   - 4-car horizontal carousel (Inferno GT, Thunder Z, Vortex R, Phantom X)
-   - Car stats with animated bars: Speed (95), Acceleration (90), Handling (92), Nitro (88)
-   - **UPGRADE** Workshop (Engine, Turbo, Tires, Nitro) modifying vehicle behavior
-   - **CUSTOMIZE** Studio (Paint colors, Wheel rims, Decals/Stripes, Underglow neon)
-
-3. **Level Select (Career)**:
-   - World 1: Desert (unlocked), World 2: City, World 3: Mountains
-   - Winding desert canyon road map with circular numbered nodes (1, 2, 3...)
-   - Stars earned badges on completed nodes
-   - Selected level info card with best time and rewards (+2,000 Coins / +250 XP)
-
-4. **Settings**:
-   - Graphics presets: Low, Medium, High, Ultra
-   - Frame rate target: 30 FPS, 60 FPS, 90 FPS
-   - Procedural Web Audio volume sliders for Sound and Music
-   - Steering sensitivity slider & Control type (Tilt, Buttons, Touch, Keyboard)
-   - Vibration toggle, Reset to default, and Save confirmation
-
-5. **3D Gameplay**:
-   - 3D chase camera with dynamic FOV during nitro boost and collision shake
-   - Multi-lane desert highway with guardrails, canyon rocks, cacti, and hot air balloons
-   - 5 AI opponent racers with obstacle avoidance and overtaking
-   - HUD: POS. 1/6, LAP 1/2, Minimap with real-time racer coordinates, curved NITRO meter, digital speedometer, and timer
-   - On-screen touch steering (< >), handbrake drift, and big glowing nitro button
-   - Keyboard support: `A`/`D` or Left/Right to steer, `W`/`S` for gas/brake, `Space` for Nitro, `Shift` for Drift, `Esc` to pause
-
-6. **Pause Overlay**:
-   - Translucent backdrop over frozen 3D simulation
-   - Resume, Restart, Settings, and Exit Race with confirmation guard
-
-7. **Race Completed**:
-   - Checkered flags banner, 3 animated gold stars, 1st place trophy
-   - Race time, rewards (+2,000 Coins, +250 XP), confetti cannon
-   - Next Race and Garage shortcuts
-
-8. **Career Profile**:
-   - Driver avatar with Lv. 5 badge and XP progress bar
-   - Career records: 32 Races Won, XP, Coins
-   - 20 Achievements with gold, silver, bronze medals, and progress trackers
+| Requirement | Supported Version | Notes |
+|---|---|---|
+| **Java Development Kit (JDK)** | **Java 17** (OpenJDK 17 / Temurin 17 / Zulu 17) | Required for AGP 8.7.2 and Kotlin 2.0.21 |
+| **Android SDK Platform** | **Android 15 (API 35)** | `compileSdk = 35`, `targetSdk = 35`, `minSdk = 26` |
+| **Android Build-Tools** | **35.0.0** (or 34.0.0+) | Installed via Android SDK Manager (`sdkmanager`) |
+| **Gradle** | **8.11.1** | Managed automatically via `./gradlew` |
+| **Node.js (Optional for APK, required for Web preview)** | **Node.js 20 or 22** | Pre-bundled assets exist in `app/src/main/assets/web/` |
 
 ---
 
-## 3. Android Platform & GitHub CI/CD
+## 2. Local Build Commands
 
-### Target & Minimum SDK:
-- `minSdk = 26` (Android 8.0 Oreo - covers 96%+ of active Android devices)
-- `compileSdk = 35` / `targetSdk = 35` (Android 15 - latest Android release)
-- Android 15 Edge-to-Edge compliance via `enableEdgeToEdge()` and `WindowInsetsCompat`.
-- Display cutout support (`LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES`).
-
-### Building APK on Push via GitHub Actions:
-The repository includes `.github/workflows/build-apk.yml`. Whenever you push code to GitHub:
-1. GitHub Actions automatically checks out the repository.
-2. Configures JDK 17 and Android SDK 35 with build-tools 35.0.0.
-3. Executes `./gradlew assembleDebug` and `./gradlew testDebugUnitTest`.
-4. Produces the installable APK: `app/build/outputs/apk/debug/app-debug.apk`.
-5. Uploads the APK as a downloadable artifact in the GitHub repository's **Actions** tab.
-
-### Local APK Build Command:
+### Step A: Build Web Assets (If Modifying Frontend Code)
 ```bash
-./gradlew assembleDebug
+npm install
+npm run build
+mkdir -p app/src/main/assets/web
+cp -r dist/* app/src/main/assets/web/
 ```
-The resulting APK is generated at:
-`app/build/outputs/apk/debug/app-debug.apk`
+
+### Step B: Build Android APK
+Make sure `JAVA_HOME` points to JDK 17 and `ANDROID_HOME` points to your Android SDK.
+
+```bash
+# Clean the build cache
+./gradlew clean
+
+# Run unit tests
+./gradlew testDebugUnitTest --continue --stacktrace
+
+# Assemble debug APK
+./gradlew assembleDebug --stacktrace
+```
+
+### Automated One-Command Local Build
+Run the provided automated build script, which handles SDK tool verification, asset synchronization, tests, and compilation:
+```bash
+chmod +x build_apk_local.sh
+./build_apk_local.sh
+```
+
+---
+
+## 3. APK Output Path
+
+Upon a successful build, the debug APK is generated at:
+
+```
+app/build/outputs/apk/debug/app-debug.apk
+```
+
+---
+
+## 4. GitHub Actions CI/CD
+
+An automated workflow is configured at `.github/workflows/build-apk.yml`.
+
+### Workflow Capabilities:
+1. **Triggers**: On push or pull request to any branch, and manual trigger (`workflow_dispatch`).
+2. **Environment**: Runs on `ubuntu-latest` with JDK 17 (Temurin) and Android SDK 35.
+3. **Gradle Validation**: Validates the Gradle wrapper checksum via `gradle/actions/wrapper-validation@v4`.
+4. **Asset Synchronization**: Builds the latest web bundle using Node.js 22 and packages it into `app/src/main/assets/web/`.
+5. **Testing & Building**: Runs `./gradlew clean testDebugUnitTest assembleDebug`.
+6. **Artifact Upload**: Uploads `app-debug.apk` as a downloadable artifact named `SpeedEscape3D-Debug-APK` retained for 30 days.
+7. **Diagnostics**: Automatically prints test reports and environment info if a failure occurs.
+
+### Required GitHub Secrets:
+- **None required for Debug APK builds**.
+- If signing a production Release APK with a custom keystore in the future:
+  - `KEYSTORE_BASE64`: Base64-encoded release keystore
+  - `KEYSTORE_PASSWORD`: Keystore password
+  - `KEY_ALIAS`: Key alias name
+  - `KEY_PASSWORD`: Key password
+
+---
+
+## 5. Troubleshooting
+
+### 1. `sdk.dir` missing or SDK location not found
+- Ensure `ANDROID_HOME` is exported: `export ANDROID_HOME=/path/to/android/sdk`
+- Or create a `local.properties` file in the root directory:
+  ```properties
+  sdk.dir=/path/to/android/sdk
+  ```
+
+### 2. Java Version Incompatibility
+- Verify Java 17 is active:
+  ```bash
+  java -version
+  javac -version
+  ```
+- If Java 21 or Java 8 is selected by default, switch via `update-alternatives --config java` or set `export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64`.
+
+### 3. Missing Licenses in Android SDK
+Run the SDK Manager license acceptance:
+```bash
+yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+```
+
+### 4. WebView / WebGL Rendering Issues on Older Emulators
+- Ensure Hardware Acceleration is enabled in your Android Virtual Device (AVD).
+- The application requires OpenGL ES 3.0+ hardware acceleration (standard on physical devices since Android 8.0).
